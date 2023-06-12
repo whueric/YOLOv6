@@ -247,8 +247,14 @@ class Inferer:
             outside = p1[1] - h - 3 >= 0  # label fits outside box
             p2 = p1[0] + w, p1[1] - h - 3 if outside else p1[1] + h + 3
             cv2.rectangle(image, p1, p2, color, -1, cv2.LINE_AA)  # filled
-            cv2.putText(image, label, (p1[0], p1[1] - 2 if outside else p1[1] + h + 2), font, lw / 3, txt_color,
-                        thickness=tf, lineType=cv2.LINE_AA)
+            
+            #cv2.putText(image, label, (p1[0], p1[1] - 2 if outside else p1[1] + h + 2), font, lw / 3, txt_color,
+            #            thickness=tf, lineType=cv2.LINE_AA)
+            #use freetype2 to print chinese  
+            ft2 = cv2.freetype.createFreeType2()
+            ft2.loadFontData("./yolov6/utils/simsun.ttc", 0)
+            ft2.putText(image, label, (p1[0], p1[1] - 2 if outside else p1[1] + h + 2), 80, txt_color,
+                        cv2.FILLED, cv2.LINE_AA, True)
 
     @staticmethod
     def font_check(font='./yolov6/utils/Arial.ttf', size=10):
